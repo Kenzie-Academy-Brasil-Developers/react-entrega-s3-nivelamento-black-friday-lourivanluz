@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardPromo } from "../CardPromo";
 import { Cart } from "../Cart";
 import { ListaProdutos } from "../ListaProdutos";
 
 export const Display = () => {
   const [product, setProduct] = useState([
-    { id: 1, name: "Smart TV LED 50", price: 100 },
-    { id: 2, name: "PlayStation 5", price: 100 },
-    { id: 3, name: "Notebook Acer Nitro 5", price: 100 },
-    { id: 4, name: "Headset s fio Logitech G935", price: 100 },
-    { id: 5, name: "Tablet Samsung Galaxy Tab S7", price: 100 },
-    { id: 6, name: "Cadeira Gamer Cruiser Preta FORTREK", price: 100 },
+    { id: 1, name: "Smart TV LED 50", price: 1999.0 },
+    { id: 2, name: "PlayStation 5", price: 12000.0 },
+    { id: 3, name: "Notebook Acer Nitro 5", price: 5109.72 },
+    { id: 4, name: "Headset s fio Logitech G935", price: 1359.0 },
+    { id: 5, name: "Tablet Samsung Galaxy Tab S7", price: 4844.05 },
+    { id: 6, name: "Cadeira Gamer Cruiser Preta FORTREK", price: 1215.16 },
   ]);
 
   const [carrinho, setCarrinho] = useState([]);
 
-  const [id, setId] = useState("");
   const [produtoPromo, setProdutoPromo] = useState({});
-
-  useEffect(() => {
-    if (id) {
-      const filtred = product.filter((item) => item.id === id);
-      setProdutoPromo(filtred[0]);
-    }
-  }, [id]);
+  const [promo, setPromo] = useState(0);
 
   const sorteio = () => {
-    const numero = Math.floor(Math.random() * (6 + 1));
-    setId(numero);
+    const id = Math.floor(Math.random() * 6) + 1;
+    const filtred = product.filter((item) => item.id === id);
+    const promo = (Math.floor(Math.random() * (90 - 40 + 1)) + 40) / 100;
+    setProdutoPromo(filtred[0]);
+    setPromo(promo);
   };
 
-  const total = carrinho.reduce((acc, item) => item.price + acc, 0);
+  const total = carrinho.reduce((acc, item) => Number(item.price) + acc, 0);
   return (
     <div>
       <h1>Produtos</h1>
@@ -43,6 +39,7 @@ export const Display = () => {
       <button onClick={sorteio}>Gerar promoção</button>
       <CardPromo
         produtoPromo={produtoPromo}
+        promo={promo}
         setCarrinho={setCarrinho}
         carrinho={carrinho}
       />
